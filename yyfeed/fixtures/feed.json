@@ -1,0 +1,13 @@
+[
+  {
+    "model": "yyfeed.feed",
+    "pk": 1,
+    "fields": {
+      "name": "hearthstone",
+      "title": "旅法师营地 - 炉石传说",
+      "fetcher": "yyfeed.fetcher.iyingdi.IYingDiFetcher",
+      "link": "http://www.iyingdi.com/web/articles/hearthstone",
+      "description": "旅法师营地 - 炉石传说"
+    }
+  }
+]

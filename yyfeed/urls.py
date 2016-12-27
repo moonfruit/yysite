@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import url
-from django.views.generic import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage as storage
+from django.views.generic import RedirectView
 
 from . import views
 from .views import AtomFeed, RssFeed
 
 feed = RssFeed()
 
-app_name = 'yyfeed'
 urlpatterns = [
     url(r'^favicon.ico$',
         RedirectView.as_view(url=storage.url("/yyfeed/favicon.ico"), permanent=True),

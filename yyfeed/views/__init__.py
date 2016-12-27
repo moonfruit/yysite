@@ -2,3 +2,5 @@
 
 from .basic import index
 from .feed import AtomFeed, RssFeed
+
+app_name = 'yyfeed'

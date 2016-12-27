@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import json
-
 from typing import BinaryIO, Union
 from urllib.parse import urlencode
 from urllib.request import HTTPCookieProcessor, Request

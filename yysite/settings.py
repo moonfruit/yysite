@@ -32,7 +32,7 @@ SECRET_KEY = 'bqg_=(8))my1ice*5loz*z(6bv(71^xi@zn)u@&9b95&2kiev7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "::1"]
 
 # Application definition
 
@@ -165,6 +165,9 @@ LOGGING = {
         'level': 'TRACE',
     },
 }
+
+# Notify
+ADMINS = [('MoonFruit', 'dkmoonfruit@gmail.com')]
 
 # Cron Job
 # http://django-cron.readthedocs.io/en/latest/

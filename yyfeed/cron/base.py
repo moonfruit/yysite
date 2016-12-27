@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
-
 from abc import ABCMeta, abstractmethod
+
 from django.conf import settings
 
 from yyfeed.fetcher import Fetcher
@@ -42,10 +42,10 @@ class FetcherJob(metaclass=ABCMeta):
             feed.feeditem_set.update_or_create(
                 item_id=item.id,
                 defaults={
-                    'title': item.title.trim(),
+                    'title': item.title.strip(),
                     'publish_date': item.publish_date,
                     'link': item.link,
-                    'description': item.description
+                    'description': item.description.strip()
                 }
             )
 

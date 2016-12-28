@@ -2,8 +2,7 @@
 from django.contrib.syndication import views
 from django.utils.feedgenerator import Atom1Feed
 
-from yyfeed.models import Feed, FeedItem
-from . import app_name
+from yyfeed.models import APP_NAME, Feed, FeedItem
 
 
 # noinspection PyMethodMayBeStatic
@@ -20,9 +19,6 @@ class RssFeed(views.Feed):
 
     def description(self, obj: Feed):
         return obj.description
-
-    def feed_guid(self, obj: Feed):
-        return app_name + '-' + obj.name
 
     def items(self, obj: Feed):
         return obj.feeditem_set.order_by('-publish_date')[:100]
@@ -46,3 +42,6 @@ class AtomFeed(RssFeed):
 
     def subtitle(self, obj: Feed):
         return obj.description
+
+    def feed_guid(self, obj: Feed):
+        return APP_NAME + '-' + obj.name

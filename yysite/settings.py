@@ -179,7 +179,15 @@ CRON_CLASSES = [
 DJANGO_CRON_DELETE_LOGS_OLDER_THAN = 15
 
 # YYFeed
+
+# For Debug
 YYFEED_CACHE = {
     '()': 'yyutil.cache.FileCache',
-    'filename': os.path.join(VAR_DIR, 'cache.pickle')
+    'filename': os.path.join(VAR_DIR, 'cache.pickle'),
 }
+
+# For Production
+# YYFEED_CACHE = {
+#     '()': 'yyutil.cache.MemCache',
+#     'servers': ['127.0.0.1:11211'],
+# }

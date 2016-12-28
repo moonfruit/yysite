@@ -5,10 +5,12 @@ from django.contrib.staticfiles.storage import staticfiles_storage as storage
 from django.views.generic import RedirectView
 
 from . import views
+from .models import APP_NAME
 from .views import AtomFeed, RssFeed
 
 feed = RssFeed()
 
+app_name = APP_NAME
 urlpatterns = [
     url(r'^favicon.ico$',
         RedirectView.as_view(url=storage.url("/yyfeed/favicon.ico"), permanent=True),

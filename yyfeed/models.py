@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
+APP_NAME = 'yyfeed'
 ID_SIZE = 32
 DESC_SIZE = 4000
 

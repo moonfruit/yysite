@@ -8,10 +8,7 @@ from .base import Cache
 
 
 class MemCache(Cache):
-    def __init__(self, servers=None, **kargs):
-        if servers is None:
-            self.cache = memcache.Client(**kargs)
-        else:
+    def __init__(self, servers, **kargs):
             self.cache = memcache.Client(servers, **kargs)
 
     def set(self, key, value, timeout=0):

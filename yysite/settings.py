@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Directory
 LOG_DIR = os.path.join(BASE_DIR, 'log')
-VAR_DIR = os.path.join(BASE_DIR, 'zoo')
+VAR_DIR = os.path.join(BASE_DIR, 'var')
 
 os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(VAR_DIR, exist_ok=True)
@@ -32,7 +32,7 @@ SECRET_KEY = 'bqg_=(8))my1ice*5loz*z(6bv(71^xi@zn)u@&9b95&2kiev7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "::1"]
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -129,11 +129,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 # Logging
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
     'formatters': {
         'console': {
             '()': 'yyutil.logging.ColorfulFormatter',
@@ -157,7 +158,7 @@ LOGGING = {
             'formatter': 'file',
             'filename': os.path.join(LOG_DIR, 'application.log'),
             'maxBytes': 10 * 1024 * 1024,
-            'backupCount': 3,
+            'backupCount': 5,
         },
     },
     'root': {

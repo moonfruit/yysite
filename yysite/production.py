@@ -32,8 +32,16 @@ CSRF_COOKIE_HTTPONLY = True
 
 X_FRAME_OPTIONS = 'DENY'
 
+# Log
+LOGGING.update({
+    'root': {
+        'handlers': ['file'],
+        'level': 'DEBUG',
+    },
+})
+
 # YYFeed
 YYFEED_CACHE = {
     '()': 'yyutil.cache.MemCache',
-    'servers': ['/var/run/memcached.sock', '127.0.0.1:11211'],
+    'servers': ['/var/run/memcached.sock'],
 }

@@ -84,7 +84,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django',
-        'USER': 'moon',
+        'USER': 'django',
         'CHARSET': 'utf8mb4',
         'OPTIONS': {
             'charset': 'utf8mb4',

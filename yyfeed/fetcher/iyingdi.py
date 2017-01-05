@@ -111,8 +111,9 @@ class IYingDiFetcher(Fetcher):
                     text += '<br><span>%s</span>' % caption
 
             elif content_type == 'audio':
-                text = '<audio preload="auto" controls="controls" src="%s"></video>' % content[
-                    'url']
+                text = '<audio preload="auto" controls="controls" src="%s"></video>' % (
+                    content['src']
+                )
 
                 title = content['title']
                 if title:

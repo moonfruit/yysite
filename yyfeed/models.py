@@ -24,6 +24,8 @@ class FeedItem(models.Model):
     publish_date = models.DateTimeField()
     link = models.CharField(max_length=DESC_SIZE)
     description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         index_together = ["feed", "item_id"]

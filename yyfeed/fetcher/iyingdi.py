@@ -19,7 +19,7 @@ class IYingDiFetcher(Fetcher):
     TOPICS_URL = DATA_URL + '/topics'
     ITEM_URL = BASE_URL + '/web/articles/%s/%d'
 
-    def __init__(self, module=12, size=20):
+    def __init__(self, module=12, size=100):
         super().__init__()
         self.article_url = self.LIST_URL % (size, module)
 

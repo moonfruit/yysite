@@ -48,6 +48,7 @@ class JandanFetcher(Fetcher):
                     src = 'http:' + src
                 imgs.append('<div><img src="%s"/></div>' % src)
 
-            results.append(Item(a.text, a.text, None, a['href'], ''.join(imgs)))
+            if imgs:
+                results.append(Item(a.text, a.text, None, a['href'], ''.join(imgs)))
 
         return results

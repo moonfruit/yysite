@@ -20,5 +20,16 @@
       "link": "http://jandan.net/ooxx",
       "description": "煎蛋 - 妹子图"
     }
+  },
+  {
+    "model": "yyfeed.feed",
+    "pk": 3,
+    "fields": {
+      "name": "iapps",
+      "title": "爱应用",
+      "fetcher": "yyfeed.fetcher.IAppsFetcher",
+      "link": "http://www.iapps.im",
+      "description": "爱应用"
+    }
   }
 ]

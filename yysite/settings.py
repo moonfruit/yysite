@@ -176,6 +176,7 @@ ADMINS = [('MoonFruit', 'dkmoonfruit@gmail.com')]
 CRON_CLASSES = [
     'yyfeed.cron.HearthstoneJob',
     'yyfeed.cron.OoxxJob',
+    'yyfeed.cron.IAppsJob',
 ]
 
 DJANGO_CRON_DELETE_LOGS_OLDER_THAN = 15

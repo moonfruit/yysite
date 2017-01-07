@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from yyfeed.fetcher import IYingDiFetcher, JandanFetcher
+from yyfeed.fetcher import IAppsFetcher, IYingDiFetcher, JandanFetcher
 
 
 def iyingdi():
@@ -19,8 +19,16 @@ def jandan():
         print(item)
 
 
+def iapps():
+    fetcher = IAppsFetcher()
+    items = fetcher.fetch()
+    print(len(items))
+    for item in items:
+        print(item)
+
+
 def main():
-    jandan()
+    iapps()
 
 
 if __name__ == '__main__':

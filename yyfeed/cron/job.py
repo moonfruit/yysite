@@ -30,3 +30,15 @@ class OoxxJob(CronJobBase, FetcherJob):
 
     def name(self):
         return 'ooxx'
+
+
+class IAppsJob(CronJobBase, FetcherJob):
+    RUN_EVERY_MINS = 60
+    RETRY_AFTER_FAILURE_MINS = 10
+
+    schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
+                        retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
+    code = 'yyfeed.fetcher.iapps'
+
+    def name(self):
+        return 'iapps'

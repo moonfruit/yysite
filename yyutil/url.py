@@ -6,6 +6,7 @@ from urllib.request import HTTPCookieProcessor, Request
 from urllib.request import build_opener
 
 from bs4 import BeautifulSoup
+from lxml import etree
 
 
 class UrlFetcher:
@@ -36,3 +37,7 @@ class UrlFetcher:
     def soup(self, url, data=None, **kwargs) -> BeautifulSoup:
         with self.open(url, data) as stream:
             return BeautifulSoup(stream, 'lxml', **kwargs)
+
+    def xml(self, url, data=None):
+        with self.open(url, data) as stream:
+            return etree.parse(stream)

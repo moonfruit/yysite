@@ -39,14 +39,15 @@ class FetcherJob(metaclass=ABCMeta):
         for item in fetcher.fetch():
             logger.trace("item = %s", item)
 
-            feed.feeditem_set.update_or_create(
-                item_id=item.id,
-                defaults={
-                    'title': item.title.strip(),
-                    'publish_date': item.publish_date,
-                    'link': item.link,
-                    'description': item.description.strip()
-                }
-            )
+            defaults = {
+                'title': item.title.strip(),
+                'link': item.link,
+                'description': item.description.strip()
+            }
+
+            if item.publish_date:
+                defaults['publish_date'] = item.publish_date
+
+            feed.feeditem_set.update_or_create(item_id=item.id, defaults=defaults)
 
         logger.debug('---- End fetch feed [%s] ----', feed.name)

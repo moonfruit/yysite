@@ -163,7 +163,7 @@ LOGGING = {
     },
     'root': {
         'handlers': ['console'],
-        'level': 'DEBUG',
+        'level': 'TRACE',
     },
 }
 
@@ -174,7 +174,8 @@ ADMINS = [('MoonFruit', 'dkmoonfruit@gmail.com')]
 # http://django-cron.readthedocs.io/en/latest/
 
 CRON_CLASSES = [
-    'yyfeed.cron.job.HearthstoneJob',
+    'yyfeed.cron.HearthstoneJob',
+    'yyfeed.cron.OoxxJob',
 ]
 
 DJANGO_CRON_DELETE_LOGS_OLDER_THAN = 15

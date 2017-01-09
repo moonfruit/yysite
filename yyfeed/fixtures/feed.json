@@ -31,5 +31,16 @@
       "link": "http://www.iapps.im",
       "description": "爱应用"
     }
+  },
+  {
+    "model": "yyfeed.feed",
+    "pk": 4,
+    "fields": {
+      "name": "smzdm",
+      "title": "什么值得买 - 乐高",
+      "fetcher": "yyfeed.fetcher.SmzdmFetcher",
+      "link": "www.smzdm.com",
+      "description": "什么值得买 - 乐高"
+    }
   }
 ]

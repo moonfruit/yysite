@@ -3,3 +3,4 @@ from .base import Fetcher, Item
 from .iapps import IAppsFetcher
 from .iyingdi import IYingDiFetcher
 from .jandan import JandanFetcher
+from .smzdm import SmzdmFetcher

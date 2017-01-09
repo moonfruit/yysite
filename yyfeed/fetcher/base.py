@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from abc import ABCMeta, abstractmethod
 from collections import namedtuple
-from typing import Sequence
+from datetime import datetime
+from typing import Optional, Sequence, Text
 
 from yyutil.cache import Cache, DummyCache
 from yyutil.url import UrlFetcher
@@ -28,4 +29,67 @@ class Fetcher(metaclass=ABCMeta):
 
     @abstractmethod
     def fetch(self) -> Sequence[Item]:
+        pass
+
+
+class FeedFetcher(Fetcher, metaclass=ABCMeta):
+    DATE_FORMAT = '%a, %d %b %Y %H:%M:%S %z'
+
+    callback = None
+
+    def fetch(self) -> Sequence[Item]:
+        root = self.fetcher.xml(self.url())
+
+        results = []
+        for item in root.iter('item'):
+            item = self.item(item)
+            if item:
+                results.append(item)
+
+        return results
+
+    def item(self, item) -> Optional[Item]:
+        result = {}
+        for child in item:
+            if child.tag == 'guid':
+                result['id'] = child.text
+
+            elif child.tag == 'title':
+                result['title'] = child.text
+
+            elif child.tag == 'link':
+                result['link'] = child.text
+
+            elif child.tag == 'pubDate':
+                try:
+                    result['publish_date'] = datetime.strptime(child.text, self.DATE_FORMAT)
+                except ValueError:
+                    result['publish_date'] = None
+
+            elif child.tag == 'description':
+                result['description'] = child.text
+
+        if callable(self.callback):
+            if not self.callback(result, item):
+                return None
+
+        result['description'] = self.cached_description(result['link'])
+
+        return Item(**result)
+
+    def cached_description(self, url) -> Text:
+        data = self.cache.get(url)
+        if data is not None:
+            return data
+
+        data = self.description(url)
+        self.cache.set(url, data)
+        return data
+
+    @abstractmethod
+    def url(self) -> Text:
+        pass
+
+    @abstractmethod
+    def description(self, url) -> Text:
         pass

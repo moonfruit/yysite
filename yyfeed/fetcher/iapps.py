@@ -1,58 +1,26 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
-from typing import Sequence
+from typing import Text
 
 from bs4 import SoupStrainer
 
-from .base import Fetcher, Item
+from .base import FeedFetcher
 
 
-class IAppsFetcher(Fetcher):
-    URL = 'http://www.iapps.im/feed'
-    DATE_FORMAT = '%a, %d %b %Y %H:%M:%S %z'
+class IAppsFetcher(FeedFetcher):
     FILTER = SoupStrainer('div', id='articleLeft')
 
-    def fetch(self) -> Sequence[Item]:
-        root = self.fetcher.xml(self.URL)
+    def url(self) -> Text:
+        return 'http://www.iapps.im/feed'
 
-        results = []
-        for item in root.iter('item'):
-            results.append(self.item(item))
-
-        return results
-
-    def item(self, item):
-        result = {}
-        for child in item:
-            if child.tag == 'title':
-                result['title'] = child.text
-
-            elif child.tag == 'link':
-                result['id'] = child.text.split('/')[-1]
-                result['link'] = child.text
-
-            elif child.tag == 'pubDate':
-                try:
-                    result['publish_date'] = datetime.strptime(child.text, self.DATE_FORMAT)
-                except ValueError:
-                    result['publish_date'] = None
-
-        result['description'] = self.description(result['link'])
-
-        return Item(**result)
-
-    def description(self, url):
-        data = self.cache.get(url)
-        if data is not None:
-            return data
-
+    def description(self, url) -> Text:
+        data = ''
         soup = self.fetcher.soup(url, parse_only=self.FILTER)
 
         content = soup.find('div', 'entry-content')
         a = content.find('a', 'chat-btn')
         if a:
             a.extract()
-        data = str(content)
+        data += str(content)
 
         carousel = soup.find('div', 'carousel')
         if carousel:
@@ -60,3 +28,9 @@ class IAppsFetcher(Fetcher):
 
         self.cache.set(url, data)
         return data
+
+    # noinspection PyUnusedLocal
+    @staticmethod
+    def callback(result, item):
+        result['id'] = result['link'].split('/')[-1]
+        return True

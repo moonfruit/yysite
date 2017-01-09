@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from yyfeed.fetcher import IAppsFetcher, IYingDiFetcher, JandanFetcher
+from yyfeed.fetcher import IAppsFetcher, IYingDiFetcher, JandanFetcher, SmzdmFetcher
 
 
 def iyingdi():
@@ -27,8 +27,16 @@ def iapps():
         print(item)
 
 
+def smzdm():
+    fetcher = SmzdmFetcher()
+    items = fetcher.fetch()
+    print(len(items))
+    for item in items:
+        print(item)
+
+
 def main():
-    iapps()
+    smzdm()
 
 
 if __name__ == '__main__':

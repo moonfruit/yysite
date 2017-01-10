@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Optional, Sequence, Text
 
 from yyutil.cache import Cache, DummyCache
+from yyutil.time import astimezone
 from yyutil.url import UrlFetcher
 
 Item = namedtuple('Item', 'id title publish_date link description')
@@ -33,7 +34,8 @@ class Fetcher(metaclass=ABCMeta):
 
 
 class FeedFetcher(Fetcher, metaclass=ABCMeta):
-    DATE_FORMAT = '%a, %d %b %Y %H:%M:%S %z'
+    DATE_TZ_FORMAT = '%a, %d %b %Y %H:%M:%S %z'
+    DATE_FORMAT = '%a, %d %b %Y %H:%M:%S'
 
     callback = None
 
@@ -62,9 +64,15 @@ class FeedFetcher(Fetcher, metaclass=ABCMeta):
 
             elif child.tag == 'pubDate':
                 try:
-                    result['publish_date'] = datetime.strptime(child.text, self.DATE_FORMAT)
+                    result['publish_date'] = datetime.strptime(child.text, self.DATE_TZ_FORMAT)
+
                 except ValueError:
-                    result['publish_date'] = None
+                    try:
+                        result['publish_date'] = astimezone(
+                            datetime.strptime(child.text, self.DATE_FORMAT))
+
+                    except ValueError:
+                        result['publish_date'] = None
 
             elif child.tag == 'description':
                 result['description'] = child.text

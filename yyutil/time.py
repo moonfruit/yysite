@@ -22,6 +22,14 @@ try:
             tzinfo = None
         return datetime.fromtimestamp(timestamp, tz=tzinfo)
 
+
+    def astimezone(time):
+        try:
+            tzinfo = timezone.get_current_timezone()
+        except ImproperlyConfigured:
+            tzinfo = None
+        return time.astimezone(tzinfo)
+
 except ImportError:
     def now():
         return datetime.now()
@@ -29,3 +37,7 @@ except ImportError:
 
     def fromtimestamp(timestamp):
         return datetime.fromtimestamp(timestamp)
+
+
+    def astimezone(time):
+        return time.astimezone()

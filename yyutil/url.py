@@ -10,22 +10,23 @@ from lxml import etree
 
 
 class UrlFetcher:
-    def __init__(self, headers=None):
+    def __init__(self, headers=None, timeout=30):
         self.opener = build_opener(HTTPCookieProcessor())
+        self.timeout = timeout
+        self.headers = {
+            'Connection': 'close',
+            'User-agent': 'Mozilla/5.0 (compatible; Baiduspider/2.0; '
+                          '+http://www.baidu.com/search/spider.html) '
+        }
         if headers:
-            self.headers = headers
-        else:
-            self.headers = {
-                'User-agent': 'Mozilla/5.0 (compatible; Baiduspider/2.0; '
-                              '+http://www.baidu.com/search/spider.html) '
-            }
+            self.headers.update(headers)
 
     def open(self, url, data=None) -> BinaryIO:
         req = Request(url, headers=self.headers)
         if data:
             req.data = urlencode(data)
 
-        return self.opener.open(req)
+        return self.opener.open(req, timeout=self.timeout)
 
     def fetch(self, url, data=None, encoding='utf-8') -> str:
         with self.open(url, data) as stream:

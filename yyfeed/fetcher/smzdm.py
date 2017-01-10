@@ -8,7 +8,7 @@ from .base import FeedFetcher
 
 class SmzdmFetcher(FeedFetcher):
     FILTER = SoupStrainer('article', 'article-details')
-    KEYWORDS = ['LEGO', 'lego', '乐高']
+    KEYWORDS = ['LEGO', 'lego', '乐高', '小米']
 
     def url(self) -> Text:
         return 'http://feed.smzdm.com'

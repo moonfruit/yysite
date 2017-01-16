@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from time import sleep
 from typing import BinaryIO, Union
 from urllib.parse import urlencode
 from urllib.request import HTTPCookieProcessor, Request
@@ -10,9 +11,10 @@ from lxml import etree
 
 
 class UrlFetcher:
-    def __init__(self, headers=None, timeout=30):
+    def __init__(self, headers=None, timeout=30, wait=0):
         self.opener = build_opener(HTTPCookieProcessor())
         self.timeout = timeout
+        self.wait = wait
         self.headers = {
             'Connection': 'close',
             'User-agent': 'Mozilla/5.0 (compatible; Baiduspider/2.0; '
@@ -25,6 +27,9 @@ class UrlFetcher:
         req = Request(url, headers=self.headers)
         if data:
             req.data = urlencode(data)
+
+        if self.wait > 0:
+            sleep(self.wait)
 
         return self.opener.open(req, timeout=self.timeout)
 

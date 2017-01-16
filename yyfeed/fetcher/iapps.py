@@ -9,6 +9,12 @@ from .base import FeedFetcher
 class IAppsFetcher(FeedFetcher):
     FILTER = SoupStrainer('div', id='articleLeft')
 
+    def __init__(self):
+        super().__init__()
+        self.fetcher.headers['User-agent'] =\
+            'Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)'
+        self.fetcher.wait = 3
+
     def url(self) -> Text:
         return 'http://www.iapps.im/feed'
 

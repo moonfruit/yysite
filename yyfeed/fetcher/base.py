@@ -4,7 +4,7 @@ from collections import namedtuple
 from datetime import datetime
 from typing import Optional, Sequence, Text
 
-from yyutil.cache import Cache, DummyCache
+from yyutil.cache import DummyCache
 from yyutil.time import astimezone
 from yyutil.url import UrlFetcher
 
@@ -12,9 +12,9 @@ Item = namedtuple('Item', 'id title publish_date link description')
 
 
 class Fetcher(metaclass=ABCMeta):
-    def __init__(self, cache: Cache = DummyCache()):
+    def __init__(self):
         self._fetcher = UrlFetcher()
-        self._cache = cache
+        self._cache = DummyCache()
 
     @property
     def fetcher(self):

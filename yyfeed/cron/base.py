@@ -16,13 +16,13 @@ class FetcherJob(metaclass=ABCMeta):
     FETCHER = Fetcher
 
     def do(self):
-        # noinspection PyBroadException
         try:
             feed = Feed.objects.get(name=self.name())
             self.fetch(feed)
 
-        except:
+        except Exception as e:
             logger.exception('Fetch error')
+            raise e
 
         return 'Success.'
 

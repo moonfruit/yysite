@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
+
 from django.contrib.syndication import views
 from django.utils.feedgenerator import Atom1Feed
 
@@ -30,7 +32,7 @@ class RssFeed(views.Feed):
         return item.title
 
     def item_description(self, item: FeedItem):
-        return item.description
+        return re.sub(r'[\x00-\x08\x0B-\x0C\x0E-\x1F]*', '', item.description)
 
     def item_link(self, item: FeedItem):
         return item.link

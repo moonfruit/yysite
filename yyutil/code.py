@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 import importlib
+import json
 
 from collections import Mapping
+from json import JSONDecodeError
+from typing import Text
 
 
 def attr(string: str):
@@ -18,6 +21,12 @@ def attr(string: str):
 
 
 def build(clazz, **kwargs):
+    if isinstance(clazz, Text):
+        try:
+            clazz = json.loads(clazz)
+        except JSONDecodeError:
+            pass
+
     if isinstance(clazz, Mapping):
         data = dict(clazz)
         data.update(kwargs)

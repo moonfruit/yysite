@@ -37,10 +37,10 @@
     "pk": 4,
     "fields": {
       "name": "smzdm",
-      "title": "什么值得买 - 乐高",
-      "fetcher": "yyfeed.fetcher.SmzdmFetcher",
+      "title": "什么值得买",
+      "fetcher": "{\"()\": \"yyfeed.fetcher.SmzdmFetcher\", \"keywords\": [\"LEGO\", \"乐高\", \"小米\", \"自动铅笔\"]}",
       "link": "www.smzdm.com",
-      "description": "什么值得买 - 乐高"
+      "description": "什么值得买"
     }
   }
 ]

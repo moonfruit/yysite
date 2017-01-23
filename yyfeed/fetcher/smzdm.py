@@ -8,7 +8,10 @@ from .base import FeedFetcher
 
 class SmzdmFetcher(FeedFetcher):
     FILTER = SoupStrainer('article', 'article-details')
-    KEYWORDS = ['LEGO', 'lego', '乐高', '小米']
+
+    def __init__(self, keywords):
+        super().__init__()
+        self.keywords = keywords
 
     def url(self) -> Text:
         return 'http://feed.smzdm.com'
@@ -30,9 +33,9 @@ class SmzdmFetcher(FeedFetcher):
 
     # noinspection PyUnusedLocal
     def callback(self, result, item):
-        title = result['title']
+        title = result['title'].upper()
         goon = False
-        for word in self.KEYWORDS:
+        for word in self.keywords:
             if word in title:
                 goon = True
                 break

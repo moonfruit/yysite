@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class HearthstoneJob(CronJobBase, FetcherJob):
     RUN_EVERY_MINS = 60
-    RETRY_AFTER_FAILURE_MINS = 10
+    RETRY_AFTER_FAILURE_MINS = 9
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
                         retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
@@ -22,7 +22,7 @@ class HearthstoneJob(CronJobBase, FetcherJob):
 
 class OoxxJob(CronJobBase, FetcherJob):
     RUN_EVERY_MINS = 60
-    RETRY_AFTER_FAILURE_MINS = 10
+    RETRY_AFTER_FAILURE_MINS = 9
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
                         retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
@@ -34,7 +34,7 @@ class OoxxJob(CronJobBase, FetcherJob):
 
 class IAppsJob(CronJobBase, FetcherJob):
     RUN_EVERY_MINS = 60
-    RETRY_AFTER_FAILURE_MINS = 10
+    RETRY_AFTER_FAILURE_MINS = 9
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
                         retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)

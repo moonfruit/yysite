@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-from yyfeed.fetcher import IAppsFetcher, IYingDiFetcher, JandanFetcher, SmzdmFetcher
+
+import logging
+
+from yyfeed.fetcher import *
 
 
 def iyingdi():
@@ -35,9 +38,26 @@ def smzdm():
         print(item)
 
 
+def ttrss():
+    fetcher = TtrssFetcher()
+    items = fetcher.fetch()
+    print(len(items))
+    for item in items:
+        print(item)
+
+
+def rosiyy():
+    fetcher = RosiyyFetcher()
+    items = fetcher.fetch()
+    print(len(items))
+    for item in items:
+        print(item)
+
+
 def main():
-    smzdm()
+    rosiyy()
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     main()

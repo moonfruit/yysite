@@ -48,6 +48,10 @@ class FeedFetcher(Fetcher, metaclass=ABCMeta):
             if item:
                 results.append(item)
 
+            # for debug
+            # if item:
+            #     break
+
         return results
 
     def item(self, item) -> Optional[Item]:

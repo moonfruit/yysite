@@ -42,5 +42,27 @@
       "link": "www.smzdm.com",
       "description": "什么值得买"
     }
+  },
+  {
+    "model": "yyfeed.feed",
+    "pk": 5,
+    "fields": {
+      "name": "ttrss",
+      "title": "图图",
+      "fetcher": "yyfeed.fetcher.TtrssFetcher",
+      "link": "www.ttrss.com",
+      "description": "图图"
+    }
+  },
+  {
+    "model": "yyfeed.feed",
+    "pk": 6,
+    "fields": {
+      "name": "rosiyy",
+      "title": "Rosi YY",
+      "fetcher": "yyfeed.fetcher.RosiyyFetcher",
+      "link": "www.rosiyy.com",
+      "description": "Rosi YY"
+    }
   }
 ]

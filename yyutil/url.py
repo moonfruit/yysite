@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import logging
 from time import sleep
 from typing import BinaryIO, Union
 from urllib.parse import urlencode
@@ -8,6 +9,8 @@ from urllib.request import build_opener
 
 from bs4 import BeautifulSoup
 from lxml import etree
+
+logger = logging.getLogger(__name__)
 
 
 class UrlFetcher:
@@ -24,6 +27,12 @@ class UrlFetcher:
             self.headers.update(headers)
 
     def open(self, url, data=None) -> BinaryIO:
+        if logger.isEnabledFor(logging.DEBUG):
+            if self.wait > 0:
+                logger.debug("Fetching [%s] after [%d] seconds", url, self.wait)
+            else:
+                logger.debug("Fetching [%s]", url)
+
         req = Request(url, headers=self.headers)
         if data:
             req.data = urlencode(data)

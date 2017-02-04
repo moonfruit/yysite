@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from .job import HearthstoneJob, IAppsJob, OoxxJob, SmzdmJob
+from .job import HearthstoneJob, IAppsJob, OoxxJob, RosiyyJob, SmzdmJob, TtrssJob

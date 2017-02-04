@@ -9,8 +9,10 @@ from .base import FeedFetcher
 class SmzdmFetcher(FeedFetcher):
     FILTER = SoupStrainer('article', 'article-details')
 
-    def __init__(self, keywords):
+    def __init__(self, keywords=None):
         super().__init__()
+        if keywords is None:
+            keywords = []
         self.keywords = keywords
 
     def url(self) -> Text:
@@ -28,7 +30,6 @@ class SmzdmFetcher(FeedFetcher):
         if item:
             data += str(item)
 
-        self.cache.set(url, data)
         return data
 
     # noinspection PyUnusedLocal

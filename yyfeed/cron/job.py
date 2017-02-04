@@ -46,7 +46,7 @@ class IAppsJob(CronJobBase, FetcherJob):
 
 class SmzdmJob(CronJobBase, FetcherJob):
     RUN_EVERY_MINS = 60
-    RETRY_AFTER_FAILURE_MINS = 10
+    RETRY_AFTER_FAILURE_MINS = 9
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
                         retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
@@ -54,3 +54,27 @@ class SmzdmJob(CronJobBase, FetcherJob):
 
     def name(self):
         return 'smzdm'
+
+
+class TtrssJob(CronJobBase, FetcherJob):
+    RUN_EVERY_MINS = 60
+    RETRY_AFTER_FAILURE_MINS = 9
+
+    schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
+                        retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
+    code = 'yyfeed.fetcher.ttrss'
+
+    def name(self):
+        return 'ttrss'
+
+
+class RosiyyJob(CronJobBase, FetcherJob):
+    RUN_EVERY_MINS = 60
+    RETRY_AFTER_FAILURE_MINS = 9
+
+    schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
+                        retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
+    code = 'yyfeed.fetcher.rosiyy'
+
+    def name(self):
+        return 'rosiyy'

@@ -178,6 +178,8 @@ CRON_CLASSES = [
     'yyfeed.cron.OoxxJob',
     'yyfeed.cron.IAppsJob',
     'yyfeed.cron.SmzdmJob',
+    'yyfeed.cron.TtrssJob',
+    'yyfeed.cron.RosiyyJob',
 ]
 
 DJANGO_CRON_DELETE_LOGS_OLDER_THAN = 15

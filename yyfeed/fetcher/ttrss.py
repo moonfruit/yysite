@@ -30,8 +30,10 @@ class TtrssFetcher(FeedFetcher):
             link = a.get('href')
             if link:
                 content = self.cached_soup(link, parse_only=self.FILTER_CONTENT)
-                content = self.retrieve(content.div)
-                results.append(content)
+                div = content.div
+                if div:
+                    content = self.retrieve(div)
+                    results.append(content)
 
         return '\n'.join(results)
 

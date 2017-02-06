@@ -16,12 +16,15 @@ class FetcherJob(metaclass=ABCMeta):
     FETCHER = Fetcher
 
     def do(self):
+        name = self.name()
+
         try:
-            feed = Feed.objects.get(name=self.name())
+            feed = Feed.objects.get(name=name)
             self.fetch(feed)
 
         except Exception as e:
             logger.exception('Fetch error')
+            logger.debug('---- Error fetch feed [%s] ----', name)
             raise e
 
         return 'Success.'

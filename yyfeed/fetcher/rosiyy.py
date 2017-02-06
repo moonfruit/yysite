@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from os.path import basename, splitext
-from typing import Sequence
+from typing import Iterable
 
 from bs4 import SoupStrainer
 
@@ -13,19 +13,16 @@ class RosiyyFetcher(Fetcher):
     FILTER = SoupStrainer('h2', 'entry_title')
     FILTER_CONTENT = SoupStrainer('div', 'post postimg')
 
-    def fetch(self) -> Sequence[Item]:
+    def fetch(self) -> Iterable[Item]:
         soup = self.fetcher.soup(self.URL, parse_only=self.FILTER)
 
-        results = []
         for a in soup.find_all('a'):
             link = a['href']
             uid = splitext(basename(link))[0]
             title = a.text
             description = self.description(link)
             if description:
-                results.append(Item(uid, title, None, link, description))
-
-        return results
+                yield Item(uid, title, None, link, description)
 
     def description(self, url, page=None):
         loop = page is None

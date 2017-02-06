@@ -39,6 +39,7 @@ class FetcherJob(metaclass=ABCMeta):
 
         fetcher = build(feed.fetcher)
         fetcher.cache = cache
+        count = 0
         for item in fetcher.fetch():
             logger.trace("item = %s", item)
 
@@ -52,5 +53,6 @@ class FetcherJob(metaclass=ABCMeta):
                 defaults['publish_date'] = item.publish_date
 
             feed.feeditem_set.update_or_create(item_id=item.id, defaults=defaults)
+            count += 1
 
-        logger.debug('---- End fetch feed [%s] ----', feed.name)
+        logger.debug('---- End fetch feed [%s] with [%d] ----', feed.name, count)

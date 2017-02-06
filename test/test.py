@@ -5,57 +5,22 @@ import logging
 from yyfeed.fetcher import *
 
 
-def iyingdi():
-    fetcher = IYingDiFetcher(size=1)
-    print(fetcher.url())
-    items = fetcher.fetch()
-    print(len(items))
-    for item in items:
+def test_fetcher(fetcher):
+    count = 0
+    for i, item in enumerate(fetcher.fetch()):
+        print('-------- [%d] --------' % i)
         print(item)
-
-
-def jandan():
-    fetcher = JandanFetcher()
-    items = fetcher.fetch()
-    print(len(items))
-    for item in items:
-        print(item)
-
-
-def iapps():
-    fetcher = IAppsFetcher()
-    items = fetcher.fetch()
-    print(len(items))
-    for item in items:
-        print(item)
-
-
-def smzdm():
-    fetcher = SmzdmFetcher()
-    items = fetcher.fetch()
-    print(len(items))
-    for item in items:
-        print(item)
-
-
-def ttrss():
-    fetcher = TtrssFetcher()
-    items = fetcher.fetch()
-    print(len(items))
-    for item in items:
-        print(item)
-
-
-def rosiyy():
-    fetcher = RosiyyFetcher()
-    items = fetcher.fetch()
-    print(len(items))
-    for item in items:
-        print(item)
+        count += 1
+    print('-------- total[%d] --------' % count)
 
 
 def main():
-    rosiyy()
+    # test_fetcher(IYingDiFetcher(size=1))
+    # test_fetcher(JandanFetcher())
+    # test_fetcher(IAppsFetcher())
+    test_fetcher(SmzdmFetcher())
+    # test_fetcher(TtrssFetcher())
+    # test_fetcher(RosiyyFetcher())
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from json import JSONDecodeError
-from typing import Sequence
+from typing import Iterable
 
 from yyutil.time import fromtimestamp
 from .base import Fetcher, Item
@@ -40,8 +40,7 @@ class IYingDiFetcher(Fetcher):
 
         return self.module_url
 
-    def fetch(self) -> Sequence[Item]:
-        results = []
+    def fetch(self) -> Iterable[Item]:
         for e in self.get_data(self.article_url, 'articles'):
             uid = e[0]
             url = self.DATA_URL % uid
@@ -54,9 +53,7 @@ class IYingDiFetcher(Fetcher):
             if article.get('typee') == 2:
                 description += self.get_topics(uid)
 
-            results.append(Item(uid, article['title'], publish_date, link, description))
-
-        return results
+            yield Item(uid, article['title'], publish_date, link, description)
 
     def get_data(self, url, key=None):
         data = self.fetcher.json(url)

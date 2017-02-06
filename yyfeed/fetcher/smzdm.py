@@ -11,8 +11,6 @@ class SmzdmFetcher(FeedFetcher):
 
     def __init__(self, keywords=None):
         super().__init__()
-        if keywords is None:
-            keywords = []
         self.keywords = keywords
 
     def url(self) -> Text:
@@ -36,10 +34,15 @@ class SmzdmFetcher(FeedFetcher):
     def callback(self, result, item):
         title = result['title'].upper()
         goon = False
-        for word in self.keywords:
-            if word in title:
-                goon = True
-                break
+
+        if self.keywords:
+            for word in self.keywords:
+                if word in title:
+                    goon = True
+                    break
+
+        else:
+            goon = True
 
         if goon:
             result['id'] = result['link'].split('/')[-2]

@@ -12,7 +12,7 @@ class TtrssFetcher(FeedFetcher):
 
     def __init__(self):
         super().__init__()
-        self.fetcher.wait = 1
+        self.fetcher.wait = 2
 
     def url(self) -> Text:
         return 'http://ttrss.com/feed'

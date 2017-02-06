@@ -2,7 +2,7 @@
 from abc import ABCMeta, abstractmethod
 from collections import namedtuple
 from datetime import datetime
-from typing import Optional, Sequence, Text
+from typing import Iterable, Optional, Text
 
 from bs4 import BeautifulSoup
 
@@ -31,7 +31,7 @@ class Fetcher(metaclass=ABCMeta):
         self._cache = cache
 
     @abstractmethod
-    def fetch(self) -> Sequence[Item]:
+    def fetch(self) -> Iterable[Item]:
         pass
 
     def cached_soup(self, url, parse_only=None):
@@ -56,20 +56,13 @@ class FeedFetcher(Fetcher, metaclass=ABCMeta):
 
     callback = None
 
-    def fetch(self) -> Sequence[Item]:
+    def fetch(self) -> Iterable[Item]:
         root = self.fetcher.xml(self.url())
 
-        results = []
         for item in root.iter('item'):
             item = self.item(item)
             if item:
-                results.append(item)
-
-            # for debug
-            # if item:
-            #     break
-
-        return results
+                yield item
 
     def item(self, item) -> Optional[Item]:
         result = {}

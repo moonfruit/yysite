@@ -21,7 +21,7 @@ class IYingDiFetcher(Fetcher):
 
     def __init__(self, module=12, size=100):
         super().__init__()
-        self.article_url = self.LIST_URL % (size, module)
+        self.article_url = self.LIST_URL % (size - 1, module)
 
         self.module = "top"
         self.module_id = module

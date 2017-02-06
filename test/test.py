@@ -5,19 +5,21 @@ import sys
 
 from yyfeed.fetcher import *
 
+logger = logging.getLogger(__name__)
+
 
 def test_fetcher(fetcher):
     count = 0
     for i, item in enumerate(fetcher.fetch()):
-        print('-------- [%d] ------[[' % i)
-        print(item)
-        print(']]------ [%d] --------' % i)
+        logger.info(' -------- [%d] ------[[', i)
+        logger.info(item)
+        logger.info(']]------ [%d] --------', i)
         count += 1
-    print('-------- total[%d] --------' % count)
+    logger.info('-------- total[%d] --------' % count)
 
 
 def main():
-    test_fetcher(IYingDiFetcher(size=0))
+    test_fetcher(IYingDiFetcher(size=1))
     # test_fetcher(JandanFetcher())
     # test_fetcher(IAppsFetcher())
     # test_fetcher(SmzdmFetcher())

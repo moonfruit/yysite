@@ -18,7 +18,7 @@ class TtrssFetcher(FeedFetcher):
         return 'http://ttrss.com/feed'
 
     def description(self, url) -> Text:
-        soup = self.fetcher.soup(url, parse_only=self.FILTER)
+        soup = self.cached_soup(url, parse_only=self.FILTER)
         results = []
 
         content = soup.find(self.FILTER_CONTENT)
@@ -29,7 +29,7 @@ class TtrssFetcher(FeedFetcher):
         for a in pagelist.find_all('a'):
             link = a.get('href')
             if link:
-                content = self.fetcher.soup(link, parse_only=self.FILTER_CONTENT)
+                content = self.cached_soup(link, parse_only=self.FILTER_CONTENT)
                 content = self.retrieve(content.div)
                 results.append(content)
 
@@ -46,4 +46,10 @@ class TtrssFetcher(FeedFetcher):
         wumii = content.find('div', 'wumii-hook')
         if wumii:
             wumii.decompose()
+
+        for img in content.find_all('img'):
+            del img['height']
+            del img['width']
+            img['src'] = img['src'].replace('http://70.ot2.pw/p.php?url=', '')
+
         return str(content)

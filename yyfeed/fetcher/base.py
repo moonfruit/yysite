@@ -4,6 +4,8 @@ from collections import namedtuple
 from datetime import datetime
 from typing import Optional, Sequence, Text
 
+from bs4 import BeautifulSoup
+
 from yyutil.cache import DummyCache
 from yyutil.time import astimezone
 from yyutil.url import UrlFetcher
@@ -31,6 +33,21 @@ class Fetcher(metaclass=ABCMeta):
     @abstractmethod
     def fetch(self) -> Sequence[Item]:
         pass
+
+    def cached_soup(self, url, parse_only=None):
+        key = self.__class__.__name__ + '+' + url
+
+        soup = self.cache.get(key)
+        if soup is not None:
+            return BeautifulSoup(soup, 'lxml')
+
+        if parse_only is None:
+            soup = self.fetcher.soup(url)
+        else:
+            soup = self.fetcher.soup(url, parse_only=parse_only)
+
+        self.cache.set(key, str(soup))
+        return soup
 
 
 class FeedFetcher(Fetcher, metaclass=ABCMeta):

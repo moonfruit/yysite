@@ -167,6 +167,14 @@ LOGGING = {
     },
 }
 
+# Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(VAR_DIR, 'cache'),
+    }
+}
+
 # Notify
 ADMINS = [('MoonFruit', 'dkmoonfruit@gmail.com')]
 

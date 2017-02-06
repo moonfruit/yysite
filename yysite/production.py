@@ -40,6 +40,14 @@ LOGGING.update({
     },
 })
 
+# Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        'LOCATION': '/var/run/memcached.sock',
+    }
+}
+
 # YYFeed
 YYFEED_CACHE = {
     '()': 'yyutil.cache.MemCache',

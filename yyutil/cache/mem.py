@@ -11,7 +11,7 @@ class MemCache(Cache):
     def __init__(self, servers, **kargs):
         self.cache = memcache.Client(servers, **kargs)
 
-    def set(self, key, value, timeout=6 * 60 * 60):
+    def set(self, key, value, timeout=48 * 60 * 60):
         self.cache.set(key, value, time=timeout)
 
     def get(self, key, default=None):

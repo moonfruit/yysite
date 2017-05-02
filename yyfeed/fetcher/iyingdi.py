@@ -17,13 +17,13 @@ class IYingDiFetcher(Fetcher):
     LIST_URL = ARTICLE_URL + '/list?size=%d&module=%d&version=10000&visible=1'
     DATA_URL = ARTICLE_URL + '/%d'
     TOPICS_URL = DATA_URL + '/topics'
-    ITEM_URL = BASE_URL + '/web/articles/%s/%d'
+    ITEM_URL = BASE_URL + '/web/article/%s/%d'
 
     def __init__(self, module=12, size=100):
         super().__init__()
         self.article_url = self.LIST_URL % (size - 1, module)
 
-        self.module = "seed"
+        self.module = "top"
         self.module_id = module
         self.module_url = None
 

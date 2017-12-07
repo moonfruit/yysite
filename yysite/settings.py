@@ -85,6 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django',
         'USER': 'django',
+        'PASSWORD': 'django',
         'CHARSET': 'utf8mb4',
         'OPTIONS': {
             'charset': 'utf8mb4',

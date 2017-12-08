@@ -20,16 +20,16 @@ class HearthstoneJob(CronJobBase, FetcherJob):
         return 'hearthstone'
 
 
-# class OoxxJob(CronJobBase, FetcherJob):
-#     RUN_EVERY_MINS = 59
-#     RETRY_AFTER_FAILURE_MINS = 9
-#
-#     schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
-#                         retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
-#     code = 'yyfeed.fetcher.ooxx'
-#
-#     def name(self):
-#         return 'ooxx'
+class OoxxJob(CronJobBase, FetcherJob):
+    RUN_EVERY_MINS = 59
+    RETRY_AFTER_FAILURE_MINS = 9
+
+    schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
+                        retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
+    code = 'yyfeed.fetcher.ooxx'
+
+    def name(self):
+        return 'ooxx'
 
 
 class IAppsJob(CronJobBase, FetcherJob):

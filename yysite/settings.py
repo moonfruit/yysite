@@ -179,10 +179,22 @@ CACHES = {
 # Notify
 ADMINS = [('MoonFruit', 'dkmoonfruit@gmail.com')]
 
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'dkmoonfruit@gmail.com'
+EMAIL_HOST_PASSWORD = ''
+
+DEFAULT_FROM_EMAIL = 'dkmoonfruit@gmail.com'
+SERVER_EMAIL = 'dkmoonfruit@gmail.com'
+
 # Cron Job
 # http://django-cron.readthedocs.io/en/latest/
 
 CRON_CLASSES = [
+    'django_cron.cron.FailedRunsNotificationCronJob',
     'yyfeed.cron.HearthstoneJob',
     'yyfeed.cron.OoxxJob',
     'yyfeed.cron.IAppsJob',
@@ -190,6 +202,8 @@ CRON_CLASSES = [
     'yyfeed.cron.TtrssJob',
     'yyfeed.cron.RosiyyJob',
 ]
+
+FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[Django] "
 
 DJANGO_CRON_DELETE_LOGS_OLDER_THAN = 15
 

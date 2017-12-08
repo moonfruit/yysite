@@ -48,6 +48,11 @@ CACHES = {
     }
 }
 
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# noinspection SpellCheckingInspection
+EMAIL_HOST_PASSWORD = ''
+
 # YYFeed
 YYFEED_CACHE = {
     '()': 'yyutil.cache.MemCache',

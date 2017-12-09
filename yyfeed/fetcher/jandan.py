@@ -3,6 +3,7 @@ import base64
 import hashlib
 import logging
 import re
+from time import time
 from typing import Iterable
 
 # noinspection PyProtectedMember
@@ -107,6 +108,7 @@ def decode(cipher, key):
         key = ''
     key = md5(key)
     key_head = md5(key[:16])
+    key_tail = md5(key[16:])
 
     cipher_head = cipher[:4]
     secret = key_head + md5(key_head + cipher_head)
@@ -122,18 +124,24 @@ def decode(cipher, key):
         index = (index + array[i] + array2[i]) % 256
         array[i], array[index] = array[index], array[i]
 
-    index = index2 = 0
-    for i in range(26):
-        index = (index + 1) % 256
-        index2 = (index2 + array[index]) % 256
-        array[index], array[index2] = array[index2], array[index]
-
     result = ''
-    for i in range(26, len(cipher_tail)):
+    index = index2 = 0
+    for i in range(len(cipher_tail)):
         index = (index + 1) % 256
         index2 = (index2 + array[index]) % 256
         array[index], array[index2] = array[index2], array[index]
         result += chr(cipher_tail[i] ^ (array[(array[index] + array[index2]) % 256]))
+
+    timestamp = int(result[:10])
+    expected = result[10:26]
+    result = result[26:]
+    actual = md5(result + key_tail)[:16]
+
+    if timestamp != 0 and timestamp - time() <= 0:
+        raise RuntimeError("Invalid timestamp [%s]" % timestamp)
+
+    if expected != actual:
+        raise RuntimeError("Not match mac")
 
     result = re.sub(r'(//\w+\.sinaimg\.cn/)(\w+)(/.+\.(gif|jpg|jpeg))', '\\1large\\3', result)
     result = normalize(result)

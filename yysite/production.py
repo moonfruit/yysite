@@ -7,7 +7,7 @@ ETC_DIR = os.path.join(BASE_DIR, 'etc')
 # Django
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', '.moonfruit.top']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', '23.226.78.111', '.moonfruit.top']
 
 with open(os.path.join(ETC_DIR, 'secret_key.txt')) as f:
     SECRET_KEY = f.read().strip()

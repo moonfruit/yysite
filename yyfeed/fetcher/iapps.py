@@ -11,8 +11,7 @@ class IAppsFetcher(FeedFetcher):
 
     def __init__(self):
         super().__init__()
-        self.fetcher.headers['User-agent'] =\
-            'Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)'
+        self.fetcher.headers['User-agent'] = 'Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)'
         self.fetcher.wait = 2
 
     def url(self) -> Text:

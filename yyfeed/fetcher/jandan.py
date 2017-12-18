@@ -56,6 +56,10 @@ class JandanFetcher(Fetcher):
             raise RuntimeError("Cannot get key url")
         key_url = normalize(key_url)
 
+        key = self.cache.get(key_url)
+        if key is not None:
+            return key
+
         js = self.fetcher.fetch(key_url)
         match = re.search(r'jandan_load_img\(.*\){.*f_\w+\(.*?"(.*?)"\).*}', js, re.ASCII)
         key = None
@@ -64,6 +68,7 @@ class JandanFetcher(Fetcher):
         if not key:
             raise RuntimeError("Cannot get key from [%s]" % key_url)
 
+        self.cache.set(key_url, key)
         return key
 
     @staticmethod
@@ -77,11 +82,17 @@ class JandanFetcher(Fetcher):
 
             imgs = []
             for img in text.find_all('span', 'img-hash'):
-                src = decode(img.text, key)
+                src = normalize(decode(img.text, key))
                 imgs.append('<div><img src="%s"/></div>' % src)
 
             if imgs:
-                yield Item(a.text, a.text, None, a['href'], ''.join(imgs))
+                yield Item(a.text, a.text, None, normalize(a['href']), ''.join(imgs))
+
+
+def normalize(url):
+    if url.startswith('//'):
+        url = "http:" + url
+    return url
 
 
 def md5(text):
@@ -95,12 +106,6 @@ def base64decode(text):
     if mod != 0:
         text += '=' * (4 - mod)
     return base64.b64decode(text)
-
-
-def normalize(url):
-    if url.startswith('//'):
-        url = "http:" + url
-    return url
 
 
 def decode(cipher, key):
@@ -144,6 +149,5 @@ def decode(cipher, key):
         raise RuntimeError("Not match mac")
 
     result = re.sub(r'(//\w+\.sinaimg\.cn/)(\w+)(/.+\.(gif|jpg|jpeg))', '\\1large\\3', result)
-    result = normalize(result)
 
     return result

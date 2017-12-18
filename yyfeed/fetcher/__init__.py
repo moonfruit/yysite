@@ -6,4 +6,3 @@ from .jandan import JandanFetcher
 from .rosiyy import RosiyyFetcher
 from .smzdm import SmzdmFetcher
 from .ttrss import TtrssFetcher
-

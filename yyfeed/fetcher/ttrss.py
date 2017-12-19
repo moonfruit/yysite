@@ -26,14 +26,15 @@ class TtrssFetcher(FeedFetcher):
         results.append(content)
 
         pagelist = soup.find('div', 'pagelist')
-        for a in pagelist.find_all('a'):
-            link = a.get('href')
-            if link:
-                content = self.cached_soup(link, parse_only=self.FILTER_CONTENT)
-                div = content.div
-                if div:
-                    content = self.retrieve(div)
-                    results.append(content)
+        if pagelist:
+            for a in pagelist.find_all('a'):
+                link = a.get('href')
+                if link:
+                    content = self.cached_soup(link, parse_only=self.FILTER_CONTENT)
+                    div = content.div
+                    if div:
+                        content = self.retrieve(div)
+                        results.append(content)
 
         return '\n'.join(results)
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import re
 from json import JSONDecodeError
 from typing import Iterable
 
@@ -10,14 +11,16 @@ from .base import Fetcher, Item
 class IYingDiFetcher(Fetcher):
     BASE_URL = 'http://www.iyingdi.com'
     ARTICLE_URL = BASE_URL + "/article"
+    WEB_URL = BASE_URL + "/web"
 
     MODULE_URL = ARTICLE_URL + '/module/list?version=10000'
-    MODULE_BASE_URL = BASE_URL + "/web/articles/%s"
+    MODULE_BASE_URL = WEB_URL + "/articles/%s"
 
     LIST_URL = ARTICLE_URL + '/list?size=%d&module=%d&version=10000&visible=1'
     DATA_URL = ARTICLE_URL + '/%d'
     TOPICS_URL = DATA_URL + '/topics'
-    ITEM_URL = BASE_URL + '/web/article/%s/%d'
+    ITEM_URL = WEB_URL + '/article/%s/%d'
+    USER_URL = WEB_URL + '/personal/home?id=%d'
 
     def __init__(self, module=12, size=100):
         super().__init__()
@@ -49,7 +52,7 @@ class IYingDiFetcher(Fetcher):
             publish_date = fromtimestamp(article['created'])
             link = self.ITEM_URL % (self.module, uid)
 
-            description = self.get_content(article)
+            description = self.get_content(article, article.get('description'))
             if article.get('typee') == 2:
                 description += self.get_topics(uid)
 
@@ -75,51 +78,79 @@ class IYingDiFetcher(Fetcher):
 
         return data
 
-    @staticmethod
-    def get_content(article):
+    def get_content(self, article, description):
         texts = []
+        if description:
+            texts.append('<blockquote>%s</blockquote>' % description)
 
+        running = True
         try:
             article = json.loads(article['content'])
         except JSONDecodeError:
-            return '<div>%s</div>' % article['content']
+            texts.append(article['content'])
+            running = False
 
-        for content in article:
-            content_type = content['type']
+        if running:
+            for content in article:
+                content_type = content['type']
+                text = ''
 
-            if content_type == 'text':
-                text = content['content']
+                if content_type == 'text':
+                    text = content['content']
 
-            elif content_type in ('image', 'subject-content-headImg'):
-                text = '<img src="%s">' % content['url']
-                caption = content.get('caption')
-                if caption:
-                    text += '<br><span>%s</span>' % caption
+                elif content_type in ('image', 'subject-content-headImg'):
+                    text = '<img src="%s">' % content['url']
+                    caption = content.get('caption')
+                    if caption:
+                        text += '<br><span>%s</span>' % caption
 
-            elif content_type in ('media', 'video'):
-                text = content.get('content')
-                if not text:
-                    text = '<video preload="auto" controls="controls" src="%s" poster="%s"></video>' % (
-                        content['url'], content['thumbnail']
+                elif content_type in ('media', 'video'):
+                    text = content.get('content')
+                    if not text:
+                        text = '<video preload="auto" controls="controls" src="%s" poster="%s"></video>' % (
+                            content['url'], content['thumbnail']
+                        )
+
+                    caption = content.get('caption')
+                    if caption:
+                        text += '<br><span>%s</span>' % caption
+
+                elif content_type == 'audio':
+                    text = '<audio preload="auto" controls="controls" src="%s"></video>' % (
+                        content['src']
                     )
 
-                caption = content.get('caption')
-                if caption:
-                    text += '<br><span>%s</span>' % caption
+                    title = content['title']
+                    if title:
+                        title += '<br><span>%s</span>' % title
 
-            elif content_type == 'audio':
-                text = '<audio preload="auto" controls="controls" src="%s"></video>' % (
-                    content['src']
-                )
+                elif content_type == 'deckCode':
+                    text = '<img src="%s">' % content['deckIcon']
+                    code = content.get('code')
+                    if code:
+                        code = re.sub(r'^[ #]*(.*?)[ #]*$', r'\1', code)
+                        text += '<br><blockquote>%s</blockquote>' % code
 
-                title = content['title']
-                if title:
-                    title += '<br><span>%s</span>' % title
+                elif content_type == 'insertUser':
+                    user = None
+                    try:
+                        user = json.loads(content['user'])
+                    except JSONDecodeError:
+                        text = str(content)
 
-            else:
-                text = str(content)
+                    if user:
+                        head = user['head']
+                        name = user['username']
+                        description = user['description']
+                        url = self.USER_URL % user['id']
+                        text = '<blockquote><a href="%s"><img src="%s"></a>' \
+                               '<span>%s</span>：<span>%s</span></blockquote>' \
+                               % (url, head, name, description)
 
-            texts.append(text)
+                else:
+                    text = str(content)
+
+                texts.append(text)
 
         return '<div>' + '</div><br>\n<div>'.join(texts) + '</div>'
 

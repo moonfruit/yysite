@@ -18,6 +18,10 @@ class JandanFetcher(Fetcher):
     URL = 'http://jandan.net/ooxx'
     FILTER = SoupStrainer('ol', 'commentlist')
 
+    def __init__(self):
+        super().__init__()
+        self.fetcher.headers['User-Agent'] = 'Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)'
+
     def fetch(self, count=5) -> Iterable[Item]:
         current = 1
         key = None

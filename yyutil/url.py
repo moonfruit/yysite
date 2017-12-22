@@ -20,7 +20,7 @@ class UrlFetcher:
         self.wait = wait
         self.headers = {
             'Connection': 'close',
-            'User-agent': 'Mozilla/5.0 (compatible; Baiduspider/2.0; '
+            'User-Agent': 'Mozilla/5.0 (compatible; Baiduspider/2.0; '
                           '+http://www.baidu.com/search/spider.html) '
         }
         if headers:

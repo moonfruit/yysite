@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 import logging
+from os.path import getmtime
 from time import sleep
 from typing import BinaryIO, Union
 from urllib.parse import urlencode
@@ -10,6 +11,8 @@ from urllib.request import build_opener
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from lxml import etree
+
+from .time import now, fromtimestamp
 
 BAIDUSPIDER_USER_AGENT = 'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)'
 
@@ -38,8 +41,17 @@ class UrlFetcher:
                 logger.debug("Fetching [%s]", url)
 
         if self.random_user_agent:
+            try:
+                delta = now() - fromtimestamp(getmtime(ua.path))
+                if delta.days >= 7:
+                    ua.update()
+
+            except FileNotFoundError:
+                pass
+
             headers = self.headers.copy()
             headers['User-Agent'] = ua.random
+
         else:
             headers = self.headers
 

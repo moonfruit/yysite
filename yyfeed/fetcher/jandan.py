@@ -20,7 +20,7 @@ class JandanFetcher(Fetcher):
 
     def __init__(self):
         super().__init__()
-        self.fetcher.headers['User-Agent'] = 'Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)'
+        self.fetcher.random_user_agent = True
 
     def fetch(self, count=5) -> Iterable[Item]:
         current = 1

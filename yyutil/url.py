@@ -8,20 +8,24 @@ from urllib.request import HTTPCookieProcessor, Request
 from urllib.request import build_opener
 
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 from lxml import etree
 
+BAIDUSPIDER_USER_AGENT = 'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)'
+
 logger = logging.getLogger(__name__)
+ua = UserAgent(fallback=BAIDUSPIDER_USER_AGENT)
 
 
 class UrlFetcher:
-    def __init__(self, headers=None, timeout=30, wait=0):
+    def __init__(self, headers=None, timeout=30, wait=0, random_user_agent=False):
         self.opener = build_opener(HTTPCookieProcessor())
         self.timeout = timeout
         self.wait = wait
+        self.random_user_agent = random_user_agent
         self.headers = {
             'Connection': 'close',
-            'User-Agent': 'Mozilla/5.0 (compatible; Baiduspider/2.0; '
-                          '+http://www.baidu.com/search/spider.html) '
+            'User-Agent': BAIDUSPIDER_USER_AGENT
         }
         if headers:
             self.headers.update(headers)
@@ -33,7 +37,13 @@ class UrlFetcher:
             else:
                 logger.debug("Fetching [%s]", url)
 
-        req = Request(url, headers=self.headers)
+        if self.random_user_agent:
+            headers = self.headers.copy()
+            headers['User-Agent'] = ua.random
+        else:
+            headers = self.headers
+
+        req = Request(url, headers=headers)
         if data:
             req.data = urlencode(data)
 

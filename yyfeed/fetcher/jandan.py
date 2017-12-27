@@ -20,10 +20,9 @@ class JandanFetcher(Fetcher):
 
     def __init__(self):
         super().__init__()
-        self.fetcher.wait = 5
         self.fetcher.random_user_agent = True
 
-    def fetch(self, count=5) -> Iterable[Item]:
+    def fetch(self, count=1) -> Iterable[Item]:
         current = 1
         key = None
         for i in range(count):

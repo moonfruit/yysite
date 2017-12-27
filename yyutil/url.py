@@ -21,7 +21,7 @@ ua = UserAgent(fallback=BAIDUSPIDER_USER_AGENT)
 
 
 class UrlFetcher:
-    def __init__(self, headers=None, timeout=30, wait=0, random_user_agent=False):
+    def __init__(self, headers=None, timeout=120, wait=0, random_user_agent=False):
         self.opener = build_opener(HTTPCookieProcessor())
         self.timeout = timeout
         self.wait = wait

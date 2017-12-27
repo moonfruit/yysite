@@ -20,7 +20,7 @@ class JandanFetcher(Fetcher):
 
     def __init__(self):
         super().__init__()
-        self.fetcher.wait = 2
+        self.fetcher.wait = 5
         self.fetcher.random_user_agent = True
 
     def fetch(self, count=5) -> Iterable[Item]:

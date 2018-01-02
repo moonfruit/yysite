@@ -18,11 +18,15 @@ class JandanFetcher(Fetcher):
     URL = 'http://jandan.net/ooxx'
     FILTER = SoupStrainer('ol', 'commentlist')
 
-    def __init__(self):
+    def __init__(self, count=5):
         super().__init__()
+        self.count = count
         self.fetcher.random_user_agent = True
 
-    def fetch(self, count=1) -> Iterable[Item]:
+    def fetch(self, count=None) -> Iterable[Item]:
+        if count is None:
+            count = self.count
+
         current = 1
         key = None
         for i in range(count):

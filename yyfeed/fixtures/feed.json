@@ -16,7 +16,7 @@
     "fields": {
       "name": "ooxx",
       "title": "煎蛋 - 妹子图",
-      "fetcher": "yyfeed.fetcher.JandanFetcher",
+      "fetcher": "{\"()\": \"yyfeed.fetcher.JandanFetcher\", \"count\": 5}",
       "link": "http://jandan.net/ooxx",
       "description": "煎蛋 - 妹子图"
     }

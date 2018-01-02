@@ -131,6 +131,9 @@ class IYingDiFetcher(Fetcher):
                         code = re.sub(r'^[ #]*(.*?)[ #]*$', r'\1', code)
                         text += '<br><blockquote>%s</blockquote>' % code
 
+                elif content_type == 'deckSet':
+                    text = '<a href="%s">点击进入套牌集</a>' % content['webDeckSetLink']
+
                 elif content_type == 'insertUser':
                     user = None
                     try:

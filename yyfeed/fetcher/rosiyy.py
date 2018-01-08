@@ -2,6 +2,7 @@
 from os.path import basename, splitext
 from typing import Iterable
 
+# noinspection PyProtectedMember
 from bs4 import SoupStrainer
 
 from yyfeed.fetcher import Fetcher

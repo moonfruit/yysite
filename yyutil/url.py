@@ -12,23 +12,49 @@ from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from lxml import etree
 
-from .time import now, fromtimestamp
+from .time import fromtimestamp, now
 
 BAIDUSPIDER_USER_AGENT = 'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)'
+FEEDLY_USER_AGENT = 'Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)'
+
+BROWSER = {
+    'baiduspider': BAIDUSPIDER_USER_AGENT,
+    'feedly': FEEDLY_USER_AGENT,
+}
 
 logger = logging.getLogger(__name__)
-ua = UserAgent(fallback=BAIDUSPIDER_USER_AGENT)
+
+_ua = None
+
+
+def user_agent(browser) -> str:
+    result = BROWSER.get(browser)
+    if result is None:
+        global _ua
+        if _ua is None:
+            _ua = UserAgent(fallback=BAIDUSPIDER_USER_AGENT)
+        else:
+            try:
+                delta = now() - fromtimestamp(getmtime(_ua.path))
+                if delta.days >= 7:
+                    _ua.update()
+            except FileNotFoundError:
+                pass
+
+        result = _ua[browser]
+    return result
 
 
 class UrlFetcher:
-    def __init__(self, headers=None, timeout=120, wait=0, random_user_agent=False):
+    def __init__(self, headers=None, timeout=120, wait=0, browser='baiduspider', every_time=None):
         self.opener = build_opener(HTTPCookieProcessor())
         self.timeout = timeout
         self.wait = wait
-        self.random_user_agent = random_user_agent
+        self.browser = browser
+        self.every_time = every_time
         self.headers = {
             'Connection': 'close',
-            'User-Agent': BAIDUSPIDER_USER_AGENT
+            'User-Agent': user_agent(browser)
         }
         if headers:
             self.headers.update(headers)
@@ -40,17 +66,9 @@ class UrlFetcher:
             else:
                 logger.debug("Fetching [%s]", url)
 
-        if self.random_user_agent:
-            try:
-                delta = now() - fromtimestamp(getmtime(ua.path))
-                if delta.days >= 7:
-                    ua.update()
-
-            except FileNotFoundError:
-                pass
-
+        if self.every_time:
             headers = self.headers.copy()
-            headers['User-Agent'] = ua.random
+            headers['User-Agent'] = user_agent(self.browser)
 
         else:
             headers = self.headers

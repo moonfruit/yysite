@@ -6,6 +6,7 @@ from urllib.parse import urlencode
 from urllib.request import BaseHandler
 
 import execjs
+# noinspection PyProtectedMember
 from bs4 import BeautifulSoup, SoupStrainer
 
 from .base import FeedFetcher, Item
@@ -19,9 +20,8 @@ class IAppsFetcher(FeedFetcher):
         super().__init__()
         self.handler = BrowserHandler(self.DOMAIN)
         self.fetcher.opener.add_handler(self.handler)
-        self.fetcher.headers['User-Agent'] = 'Feedly/1.0 (+http://www.feedly.com/fetcher.html; like FeedFetcher-Google)'
+        self.fetcher.browser = 'random'
         self.fetcher.wait = 5
-        # self.fetcher.random_user_agent = True
 
     def fetch(self) -> Iterable[Item]:
         try:

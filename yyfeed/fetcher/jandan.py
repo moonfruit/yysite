@@ -21,7 +21,8 @@ class JandanFetcher(Fetcher):
     def __init__(self, count=5):
         super().__init__()
         self.count = count
-        self.fetcher.random_user_agent = True
+        self.fetcher.browser = 'random'
+        self.fetcher.every_time = True
 
     def fetch(self, count=None) -> Iterable[Item]:
         if count is None:

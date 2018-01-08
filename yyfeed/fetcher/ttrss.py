@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from typing import Text
 
+# noinspection PyProtectedMember
 from bs4 import SoupStrainer
 
 from yyfeed.fetcher.base import FeedFetcher

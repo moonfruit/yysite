@@ -7,3 +7,4 @@ mysqlclient
 pylibmc
 PyYAML
 fake-useragent
+PyExecJS

@@ -2,7 +2,7 @@
 from abc import ABCMeta, abstractmethod
 from collections import namedtuple
 from datetime import datetime
-from typing import Iterable, Optional, Text
+from typing import Any, Dict, Iterable, List, Optional, Text
 
 from bs4 import BeautifulSoup
 
@@ -65,7 +65,19 @@ class FeedFetcher(Fetcher, metaclass=ABCMeta):
                 yield item
 
     def item(self, item) -> Optional[Item]:
+        result = self.build_result(item)
+
+        if callable(self.callback):
+            if not self.callback(result, item):
+                return None
+
+        result['description'] = self.cached_description(result['link'])
+
+        return Item(**result)
+
+    def build_result(self, item) -> Dict[Text, Any]:
         result = {}
+
         for child in item:
             if child.tag == 'guid':
                 result['id'] = child.text
@@ -82,8 +94,7 @@ class FeedFetcher(Fetcher, metaclass=ABCMeta):
 
                 except ValueError:
                     try:
-                        result['publish_date'] = astimezone(
-                            datetime.strptime(child.text, self.DATE_FORMAT))
+                        result['publish_date'] = astimezone(datetime.strptime(child.text, self.DATE_FORMAT))
 
                     except ValueError:
                         result['publish_date'] = None
@@ -91,15 +102,9 @@ class FeedFetcher(Fetcher, metaclass=ABCMeta):
             elif child.tag == 'description':
                 result['description'] = child.text
 
-        if callable(self.callback):
-            if not self.callback(result, item):
-                return None
+        return result
 
-        result['description'] = self.cached_description(result['link'])
-
-        return Item(**result)
-
-    def cached_description(self, url) -> Text:
+    def cached_description(self, url):
         data = self.cache.get(url)
         if data is not None:
             return data
@@ -114,4 +119,34 @@ class FeedFetcher(Fetcher, metaclass=ABCMeta):
 
     @abstractmethod
     def description(self, url) -> Text:
+        pass
+
+
+class MultiFeedFetcher(FeedFetcher, metaclass=ABCMeta):
+
+    def fetch(self) -> Iterable[Item]:
+        root = self.fetcher.xml(self.url())
+
+        for item in root.iter('item'):
+            for element in self.items(item):
+                yield element
+
+    def items(self, item) -> Iterable[Item]:
+        result = self.build_result(item)
+
+        if callable(self.callback):
+            if not self.callback(result, item):
+                return
+
+        original_id = result['id']
+        original_title = result['title']
+        for index, description in enumerate(self.cached_description(result['link']), 1):
+            if index > 1:
+                result['id'] = "%s+%d" % (original_id, index)
+                result['title'] = "%s（%d）" % (original_title, index)
+            result['description'] = description
+            yield Item(**result)
+
+    @abstractmethod
+    def description(self, link) -> List[Text]:
         pass

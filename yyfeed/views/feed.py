@@ -23,7 +23,7 @@ class RssFeed(views.Feed):
         return obj.description
 
     def items(self, obj: Feed):
-        return obj.feeditem_set.order_by('-publish_date')[:100]
+        return obj.feeditem_set.order_by('-publish_date')[:1000]
 
     def item_guid(self, item: FeedItem):
         return item.feed.name + '-' + item.item_id

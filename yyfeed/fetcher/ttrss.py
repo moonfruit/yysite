@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from typing import Text
+from typing import List, Text
 
 # noinspection PyProtectedMember
 from bs4 import SoupStrainer
 
-from yyfeed.fetcher.base import FeedFetcher
+from yyfeed.fetcher.base import MultiFeedFetcher
 
 
-class TtrssFetcher(FeedFetcher):
-    FILTER = SoupStrainer('div', 'context')
-    FILTER_CONTENT = SoupStrainer('div', id='post_content')
+class TtrssFetcher(MultiFeedFetcher):
+    FILTER = SoupStrainer('div', 'content')
+    FILTER_CONTENT = SoupStrainer('article', 'article-content')
 
     def __init__(self):
         super().__init__()
@@ -18,26 +18,22 @@ class TtrssFetcher(FeedFetcher):
     def url(self) -> Text:
         return 'http://ttrss.com/feed'
 
-    def description(self, url) -> Text:
+    def description(self, url) -> List[Text]:
         soup = self.cached_soup(url, parse_only=self.FILTER)
         results = []
 
-        content = soup.find(self.FILTER_CONTENT)
-        content = self.retrieve(content)
-        results.append(content)
+        article = soup.find(self.FILTER_CONTENT)
+        self.retrieve_to(article, results)
 
-        pagelist = soup.find('div', 'pagelist')
+        pagelist = soup.find('div', 'article-paging')
         if pagelist:
             for a in pagelist.find_all('a'):
                 link = a.get('href')
                 if link:
-                    content = self.cached_soup(link, parse_only=self.FILTER_CONTENT)
-                    div = content.div
-                    if div:
-                        content = self.retrieve(div)
-                        results.append(content)
+                    article = self.cached_soup(link, parse_only=self.FILTER_CONTENT)
+                    self.retrieve_to(article, results)
 
-        return '\n'.join(results)
+        return results
 
     # noinspection PyUnusedLocal
     @staticmethod
@@ -46,14 +42,9 @@ class TtrssFetcher(FeedFetcher):
         return 'ROSI写真' not in title
 
     @staticmethod
-    def retrieve(content):
-        wumii = content.find('div', 'wumii-hook')
-        if wumii:
-            wumii.decompose()
-
-        for img in content.find_all('img'):
-            del img['height']
-            del img['width']
-            img['src'] = img['src'].replace('http://70.ot2.pw/p.php?url=', '')
-
-        return str(content)
+    def retrieve_to(article, results):
+        imgs = []
+        for img in article.find_all('img'):
+            imgs.append(str(img))
+        if imgs:
+            results.append('<div>' + '</div>\n<div>'.join(imgs) + '</div>')

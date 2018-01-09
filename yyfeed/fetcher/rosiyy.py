@@ -51,6 +51,8 @@ class RosiyyFetcher(Fetcher):
             for img in soup.find_all('img'):
                 del img['height']
                 del img['width']
+                if img['src'].startswith('/'):
+                    img['src'] = self.URL + img['src']
                 imgs.append(str(img))
             if imgs:
                 description = '<div>' + '</div>\n<div>'.join(imgs) + '</div>'

@@ -44,7 +44,7 @@ class RosiyyFetcher(Fetcher):
                             yield description
 
     def content(self, url):
-        soup = self.fetcher.cached_soup(url, parse_only=self.FILTER_CONTENT)
+        soup = self.cached_soup(url, parse_only=self.FILTER_CONTENT)
         description = None
         if soup:
             imgs = []

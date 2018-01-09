@@ -19,55 +19,39 @@ class RosiyyFetcher(Fetcher):
 
         for a in soup.find_all('a'):
             link = a['href']
-            uid = splitext(basename(link))[0]
-            title = a.text
-            description = self.description(link)
-            if description:
+            original_id = uid = splitext(basename(link))[0]
+            original_title = title = a.text
+
+            for index, description in enumerate(self.descriptions(link), 1):
+                if description:
+                    uid = "%s+%03d+%03d" % (original_id, 1000 - index, index)
+                    if index > 1:
+                        title = "%s（%d）" % (original_title, index)
                 yield Item(uid, title, None, link, description)
 
-    def description(self, url, page=None):
-        loop = page is None
-        max_page = 0
+    def descriptions(self, url):
+        soup, description = self.content(url)
+        if description:
+            yield description
 
-        if loop:
-            data = self.cache.get(url)
-            if data is not None:
-                return data
-        else:
-            url += "?page=%d" % page
+        if soup:
+            pagelist = soup.find('div', 'archives_page_bar')
+            if pagelist:
+                for a in pagelist.find_all('a'):
+                    if 'class' not in a:
+                        _, description = self.content(a['href'])
+                        if description:
+                            yield description
 
+    def content(self, url):
         soup = self.fetcher.soup(url, parse_only=self.FILTER_CONTENT)
-        if not soup:
-            return None
-
-        soup = soup.div
-        if loop:
-            div = soup.find('div', 'archives_page_bar')
-            max_page = 1
-            for a in div:
-                if 'next' in a.get('class', []):
-                    break
-                max_page = int(a.text)
-            max_page += 1
-
-        lines = []
-        for p in soup.find_all('p'):
-            a = p.a
-            if a:
-                img = a.img
-                if img:
-                    del img['height']
-                    del img['width']
-                    lines.append(str(p))
-        content = '\n'.join(lines)
-
-        if not loop:
-            return content
-
-        results = [content]
-        for i in range(2, max_page):
-            results.append(self.description(url, i))
-
-        data = '\n'.join(results)
-        self.cache.set(url, data)
-        return data
+        description = None
+        if soup:
+            imgs = []
+            for img in soup.find_all('img'):
+                del img['height']
+                del img['width']
+                imgs.append(str(img))
+            if imgs:
+                description = '<div>' + '</div>\n<div>'.join(imgs) + '</div>'
+        return soup, description

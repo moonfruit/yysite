@@ -123,7 +123,6 @@ class FeedFetcher(Fetcher, metaclass=ABCMeta):
 
 
 class MultiFeedFetcher(FeedFetcher, metaclass=ABCMeta):
-
     def fetch(self) -> Iterable[Item]:
         root = self.fetcher.xml(self.url())
 
@@ -141,8 +140,8 @@ class MultiFeedFetcher(FeedFetcher, metaclass=ABCMeta):
         original_id = result['id']
         original_title = result['title']
         for index, description in enumerate(self.cached_description(result['link']), 1):
+            result['id'] = "%s+%03d+%03d" % (original_id, 1000 - index, 1000)
             if index > 1:
-                result['id'] = "%s+%d" % (original_id, index)
                 result['title'] = "%s（%d）" % (original_title, index)
             result['description'] = description
             yield Item(**result)

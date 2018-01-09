@@ -3,7 +3,7 @@ from django.db.models import CASCADE, CharField, DateTimeField, ForeignKey, Mode
 from django.utils import timezone
 
 APP_NAME = 'yyfeed'
-ID_SIZE = 32
+ID_SIZE = 128
 DESC_SIZE = 4000
 
 

@@ -38,6 +38,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'yyfeed',
+    # 'jet.dashboard',
+    'jet',
     'django_cron',
     'django.contrib.admin',
     'django.contrib.auth',

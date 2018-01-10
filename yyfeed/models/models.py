@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.db.models import CASCADE, CharField, DateTimeField, ForeignKey, Model, TextField, URLField
+from django.db.models import CASCADE
+from django.db.models import CharField, DateTimeField, ForeignKey, Model, PositiveIntegerField, TextField, URLField
 from django.utils import timezone
 
 APP_NAME = 'yyfeed'
@@ -13,6 +14,7 @@ class Feed(Model):
     fetcher = CharField(max_length=DESC_SIZE)
     link = URLField(max_length=DESC_SIZE)
     description = CharField(max_length=DESC_SIZE)
+    limit = PositiveIntegerField(default=100)
 
     def __str__(self):
         return self.title

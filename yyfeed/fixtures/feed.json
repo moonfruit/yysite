@@ -7,7 +7,8 @@
       "title": "旅法师营地 - 炉石传说",
       "fetcher": "yyfeed.fetcher.IYingDiFetcher",
       "link": "http://www.iyingdi.com/web/articles/hearthstone",
-      "description": "旅法师营地 - 炉石传说"
+      "description": "旅法师营地 - 炉石传说",
+      "limit": 100
     }
   },
   {
@@ -18,7 +19,8 @@
       "title": "煎蛋 - 妹子图",
       "fetcher": "{\"()\": \"yyfeed.fetcher.JandanFetcher\", \"count\": 5}",
       "link": "http://jandan.net/ooxx",
-      "description": "煎蛋 - 妹子图"
+      "description": "煎蛋 - 妹子图",
+      "limit": 1000
     }
   },
   {
@@ -29,7 +31,8 @@
       "title": "爱应用",
       "fetcher": "yyfeed.fetcher.IAppsFetcher",
       "link": "http://www.iapps.im",
-      "description": "爱应用"
+      "description": "爱应用",
+      "limit": 100
     }
   },
   {
@@ -40,7 +43,8 @@
       "title": "什么值得买",
       "fetcher": "{\"()\": \"yyfeed.fetcher.SmzdmFetcher\", \"keywords\": [\"LEGO\", \"乐高\", \"小米\", \"自动铅笔\"]}",
       "link": "www.smzdm.com",
-      "description": "什么值得买"
+      "description": "什么值得买",
+      "limit": 100
     }
   },
   {
@@ -50,8 +54,9 @@
       "name": "ttrss",
       "title": "图图",
       "fetcher": "yyfeed.fetcher.TtrssFetcher",
-      "link": "www.ttrss.com",
-      "description": "图图"
+      "link": "http://www.ttrss.com",
+      "description": "图图",
+      "limit": 1000
     }
   },
   {
@@ -61,8 +66,9 @@
       "name": "rosiyy",
       "title": "Rosi YY",
       "fetcher": "yyfeed.fetcher.RosiyyFetcher",
-      "link": "www.rosiyy.com",
-      "description": "Rosi YY"
+      "link": "http://www.rosiyy.com",
+      "description": "Rosi YY",
+      "limit": 1000
     }
   }
 ]

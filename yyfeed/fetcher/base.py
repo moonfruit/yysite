@@ -140,7 +140,7 @@ class MultiFeedFetcher(FeedFetcher, metaclass=ABCMeta):
         original_id = result['id']
         original_title = result['title']
         for index, description in enumerate(self.cached_description(result['link']), 1):
-            result['id'] = "%s+%03d+%03d" % (original_id, 1000 - index, 1000)
+            result['id'] = "%s+%03d+%03d" % (original_id, 1000 - index, index)
             if index > 1:
                 result['title'] = "%s（%d）" % (original_title, index)
             result['description'] = description

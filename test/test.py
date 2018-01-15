@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import logging
-
 import sys
 
 from yyfeed.fetcher import *
@@ -20,10 +19,10 @@ def test_fetcher(fetcher):
 
 def main():
     # test_fetcher(IYingDiFetcher(size=1))
-    test_fetcher(JandanFetcher())
+    # test_fetcher(JandanFetcher())
     # test_fetcher(IAppsFetcher())
     # test_fetcher(SmzdmFetcher())
-    # test_fetcher(TtrssFetcher())
+    test_fetcher(TtrssFetcher())
     # test_fetcher(RosiyyFetcher())
     pass
 

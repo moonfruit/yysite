@@ -3,11 +3,11 @@ import base64
 import hashlib
 import logging
 import re
+from time import time
 from typing import Iterable
 
 # noinspection PyProtectedMember
 from bs4 import SoupStrainer
-from time import time
 
 from .base import Fetcher, Item
 
@@ -158,6 +158,6 @@ def decode(cipher, key):
     if expected != actual:
         raise RuntimeError("Not match mac")
 
-    result = re.sub(r'(//\w+\.sinaimg\.cn/)(\w+)(/.+\.(gif|jpg|jpeg))', '\\1large\\3', result)
+    result = re.sub(r'(//\w+\.sinaimg\.cn/)(\w+)(/.+\.(gif|jpg|jpeg))', r'\1large\3', result)
 
     return result

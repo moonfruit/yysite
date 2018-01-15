@@ -39,7 +39,7 @@ class TtrssFetcher(MultiFeedFetcher):
     @staticmethod
     def callback(result, item):
         title = result['title'].upper()
-        return 'ROSI写真' not in title
+        return not title.startswith('ROSI')
 
     @staticmethod
     def retrieve_to(article, results):

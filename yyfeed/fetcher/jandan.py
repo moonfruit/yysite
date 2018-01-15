@@ -3,11 +3,11 @@ import base64
 import hashlib
 import logging
 import re
-from time import time
 from typing import Iterable
 
 # noinspection PyProtectedMember
 from bs4 import SoupStrainer
+from time import time
 
 from .base import Fetcher, Item
 
@@ -83,7 +83,8 @@ class JandanFetcher(Fetcher):
     @staticmethod
     def generate(ol, key) -> Iterable[Item]:
         for item in ol.find_all('li'):
-            if not item.get('id'):
+            item_id = item.get('id')
+            if not item_id or item_id == 'adsense':
                 continue
 
             text = item.find('div', 'text')

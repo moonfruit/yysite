@@ -36,10 +36,10 @@ class TtrssFetcher(MultiFeedFetcher):
         return results
 
     # noinspection PyUnusedLocal
-    @staticmethod
-    def callback(result, item):
-        title = result['title'].upper()
-        return not title.startswith('ROSI')
+    # @staticmethod
+    # def callback(result, item):
+    #     title = result['title'].upper()
+    #     return not title.startswith('ROSI')
 
     @staticmethod
     def retrieve_to(article, results):

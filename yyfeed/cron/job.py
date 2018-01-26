@@ -69,8 +69,8 @@ class TtrssJob(CronJobBase, FetcherJob):
 
 
 class RosiyyJob(CronJobBase, FetcherJob):
-    RUN_EVERY_MINS = 359
-    RETRY_AFTER_FAILURE_MINS = 9
+    RUN_EVERY_MINS = 59
+    RETRY_AFTER_FAILURE_MINS = 1439
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
                         retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)

@@ -202,7 +202,7 @@ CRON_CLASSES = [
     'yyfeed.cron.IAppsJob',
     'yyfeed.cron.SmzdmJob',
     'yyfeed.cron.TtrssJob',
-    'yyfeed.cron.RosiyyJob',
+    # 'yyfeed.cron.RosiyyJob',
 ]
 
 FAILED_RUNS_CRONJOB_EMAIL_PREFIX = "[Django] "

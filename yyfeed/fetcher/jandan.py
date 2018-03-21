@@ -70,7 +70,7 @@ class JandanFetcher(Fetcher):
             return key
 
         js = self.fetcher.fetch(key_url)
-        match = re.search(r'jandan_load_img\(.*\){.*f_\w+\(.*?"(.*?)"\).*}', js, re.ASCII)
+        match = re.search(r'jandan_load_img\(.*?\){.*?var [a-z]=\w+\([a-z],"(.*?)"\);', js, re.ASCII)
         key = None
         if match:
             key = match.group(1)

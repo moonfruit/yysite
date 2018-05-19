@@ -6,7 +6,7 @@
       "name": "hearthstone",
       "title": "旅法师营地 - 炉石传说",
       "fetcher": "yyfeed.fetcher.IYingDiFetcher",
-      "link": "http://www.iyingdi.com/web/articles/hearthstone",
+      "link": "http://www.iyingdi.cn/web/articles/hearthstone",
       "description": "旅法师营地 - 炉石传说",
       "limit": 100
     }

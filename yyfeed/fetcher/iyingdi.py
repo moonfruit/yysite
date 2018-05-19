@@ -9,7 +9,7 @@ from .base import Fetcher, Item
 
 
 class IYingDiFetcher(Fetcher):
-    BASE_URL = 'http://www.iyingdi.com'
+    BASE_URL = 'http://www.iyingdi.cn'
     ARTICLE_URL = BASE_URL + "/article"
     WEB_URL = BASE_URL + "/web"
 

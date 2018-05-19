@@ -14,7 +14,7 @@ def test_fetcher(fetcher):
         logger.info(item)
         logger.info(']]------ [%d] --------', i)
         count += 1
-    logger.info('-------- total[%d] --------' % count)
+    logger.info('-------- total[%d] --------', count)
 
 
 def main():

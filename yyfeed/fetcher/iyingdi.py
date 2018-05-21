@@ -153,6 +153,9 @@ class IYingDiFetcher(Fetcher):
                 else:
                     text = str(content)
 
+                text = re.sub(r'wanxiu://innerlink\?type=article_link&amp;id=(\d+)',
+                              r'https://www.iyingdi.cn/web/article/search/\1', text)
+
                 texts.append(text)
 
         return '<div>' + '</div><br>\n<div>'.join(texts) + '</div>'

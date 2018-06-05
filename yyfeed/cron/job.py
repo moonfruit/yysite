@@ -56,16 +56,16 @@ class SmzdmJob(CronJobBase, FetcherJob):
         return 'smzdm'
 
 
-# class TtrssJob(CronJobBase, FetcherJob):
-#     RUN_EVERY_MINS = 59
-#     RETRY_AFTER_FAILURE_MINS = 359
-#
-#     schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
-#                         retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
-#     code = 'yyfeed.fetcher.ttrss'
-#
-#     def name(self):
-#         return 'ttrss'
+class TtrssJob(CronJobBase, FetcherJob):
+    RUN_EVERY_MINS = 59
+    RETRY_AFTER_FAILURE_MINS = 359
+
+    schedule = Schedule(run_every_mins=RUN_EVERY_MINS,
+                        retry_after_failure_mins=RETRY_AFTER_FAILURE_MINS)
+    code = 'yyfeed.fetcher.ttrss'
+
+    def name(self):
+        return 'ttrss'
 
 
 class RosiyyJob(CronJobBase, FetcherJob):

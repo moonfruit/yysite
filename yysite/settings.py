@@ -168,6 +168,9 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'TRACE',
     },
+    'PIL.Image': {
+        'level': 'WARNING',
+    }
 }
 
 # Cache
@@ -201,7 +204,7 @@ CRON_CLASSES = [
     'yyfeed.cron.OoxxJob',
     'yyfeed.cron.IAppsJob',
     'yyfeed.cron.SmzdmJob',
-    # 'yyfeed.cron.TtrssJob',
+    'yyfeed.cron.TtrssJob',
     # 'yyfeed.cron.RosiyyJob',
 ]
 

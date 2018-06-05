@@ -19,14 +19,15 @@ def test_fetcher(fetcher):
 
 def main():
     # test_fetcher(IYingDiFetcher(size=1))
-    test_fetcher(JandanFetcher(browser='baiduspider'))
+    # test_fetcher(JandanFetcher(browser='baiduspider'))
     # test_fetcher(IAppsFetcher())
     # test_fetcher(SmzdmFetcher())
-    # test_fetcher(TtrssFetcher())
+    test_fetcher(TtrssFetcher())
     # test_fetcher(RosiyyFetcher())
     pass
 
 
 if __name__ == '__main__':
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+    logging.getLogger('PIL.Image').setLevel(logging.WARNING)
     main()

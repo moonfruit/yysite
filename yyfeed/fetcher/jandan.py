@@ -15,10 +15,10 @@ logger = logging.getLogger(__name__)
 class JandanFetcher(Fetcher):
     URL = 'http://jandan.net/ooxx'
 
-    def __init__(self, count=5):
+    def __init__(self, count=5, browser='random'):
         super().__init__()
         self.count = count
-        self.fetcher.browser = 'random'
+        self.fetcher.browser = browser
         self.fetcher.every_time = True
 
     def fetch(self, count=None) -> Iterable[Item]:
@@ -36,7 +36,7 @@ class JandanFetcher(Fetcher):
             #     logger.debug("Get key [%s]", key)
 
             ol = soup.find('ol', 'commentlist')
-            for item in self.generate(ol, key):
+            for item in self.generate(ol, key, i == 0):
                 yield item
 
     def get_key(self, soup) -> str:
@@ -65,8 +65,7 @@ class JandanFetcher(Fetcher):
         self.cache.set(key_url, key)
         return key
 
-    @staticmethod
-    def generate(ol, key) -> Iterable[Item]:
+    def generate(self, ol, key, test) -> Iterable[Item]:
         for item in ol.find_all('li'):
             item_id = item.get('id')
             if not item_id or item_id == 'adsense':
@@ -78,6 +77,9 @@ class JandanFetcher(Fetcher):
             imgs = []
             for img in text.find_all('span', 'img-hash'):
                 src = normalize(decode(img.text, key))
+                if test:
+                    test = False
+                    self.fetcher.open(src).close()
                 imgs.append('<div><img src="%s"/></div>' % src)
 
             if imgs:

@@ -3,20 +3,17 @@ import base64
 import hashlib
 import logging
 import re
-from time import time
 from typing import Iterable
 
-# noinspection PyProtectedMember
-from bs4 import SoupStrainer
-
 from .base import Fetcher, Item
+
+# noinspection PyProtectedMember
 
 logger = logging.getLogger(__name__)
 
 
 class JandanFetcher(Fetcher):
     URL = 'http://jandan.net/ooxx'
-    FILTER = SoupStrainer('ol', 'commentlist')
 
     def __init__(self, count=5):
         super().__init__()
@@ -28,31 +25,19 @@ class JandanFetcher(Fetcher):
         if count is None:
             count = self.count
 
-        current = 1
         key = None
+        next_url = self.URL
         for i in range(count):
-            if i == 0:
-                soup = self.fetcher.soup(self.URL)
-                key = self.get_key(soup)
-                logger.debug("Get key [%s]", key)
+            soup = self.fetcher.soup(next_url)
+            next_url = normalize(soup.find('a', 'previous-comment-page')['href'].split('#')[0])
 
-                current = int(soup.find('span', 'current-comment-page').text[1: -1])
-                ol = soup.find(self.FILTER)
-                for item in self.generate(ol, key):
-                    yield item
+            # if i == 0:
+            #     key = self.get_key(soup)
+            #     logger.debug("Get key [%s]", key)
 
-            else:
-                current -= 1
-                for item in self.fetch_page(current, key):
-                    yield item
-
-    def fetch_page(self, page, key) -> Iterable[Item]:
-        if not key:
-            raise RuntimeError("No key")
-
-        url = '%s/page-%d' % (self.URL, page)
-        ol = self.fetcher.soup(url, parse_only=self.FILTER)
-        return self.generate(ol, key)
+            ol = soup.find('ol', 'commentlist')
+            for item in self.generate(ol, key):
+                yield item
 
     def get_key(self, soup) -> str:
         scripts = soup.find('head').find_all('script')
@@ -115,49 +100,50 @@ def base64decode(text):
     mod = len(text) % 4
     if mod != 0:
         text += '=' * (4 - mod)
-    return base64.b64decode(text)
+    return base64.b64decode(text).decode()
 
 
 def decode(cipher, key):
-    if not key:
-        key = ''
-    key = md5(key)
-    key_head = md5(key[:16])
-    key_tail = md5(key[16:])
+    # if not key:
+    #     key = ''
+    # key = md5(key)
+    # key_head = md5(key[:16])
+    # key_tail = md5(key[16:])
+    #
+    # cipher_head = cipher[:4]
+    # secret = key_head + md5(key_head + cipher_head)
+    #
+    # cipher_tail = cipher[4:]
+    # cipher_tail = base64decode(cipher_tail)
+    #
+    # array = list(range(256))
+    # array2 = [ord(secret[i % len(secret)]) for i in range(256)]
+    #
+    # index = 0
+    # for i in range(256):
+    #     index = (index + array[i] + array2[i]) % 256
+    #     array[i], array[index] = array[index], array[i]
+    #
+    # result = ''
+    # index = index2 = 0
+    # for i in range(len(cipher_tail)):
+    #     index = (index + 1) % 256
+    #     index2 = (index2 + array[index]) % 256
+    #     array[index], array[index2] = array[index2], array[index]
+    #     result += chr(cipher_tail[i] ^ (array[(array[index] + array[index2]) % 256]))
+    #
+    # timestamp = int(result[:10])
+    # expected = result[10:26]
+    # result = result[26:]
+    # actual = md5(result + key_tail)[:16]
+    #
+    # if timestamp != 0 and timestamp - time() <= 0:
+    #     raise RuntimeError("Invalid timestamp [%s]" % timestamp)
+    #
+    # if expected != actual:
+    #     raise RuntimeError("Not match mac")
 
-    cipher_head = cipher[:4]
-    secret = key_head + md5(key_head + cipher_head)
-
-    cipher_tail = cipher[4:]
-    cipher_tail = base64decode(cipher_tail)
-
-    array = list(range(256))
-    array2 = [ord(secret[i % len(secret)]) for i in range(256)]
-
-    index = 0
-    for i in range(256):
-        index = (index + array[i] + array2[i]) % 256
-        array[i], array[index] = array[index], array[i]
-
-    result = ''
-    index = index2 = 0
-    for i in range(len(cipher_tail)):
-        index = (index + 1) % 256
-        index2 = (index2 + array[index]) % 256
-        array[index], array[index2] = array[index2], array[index]
-        result += chr(cipher_tail[i] ^ (array[(array[index] + array[index2]) % 256]))
-
-    timestamp = int(result[:10])
-    expected = result[10:26]
-    result = result[26:]
-    actual = md5(result + key_tail)[:16]
-
-    if timestamp != 0 and timestamp - time() <= 0:
-        raise RuntimeError("Invalid timestamp [%s]" % timestamp)
-
-    if expected != actual:
-        raise RuntimeError("Not match mac")
-
+    result = base64decode(cipher)
     result = re.sub(r'(//\w+\.sinaimg\.cn/)(\w+)(/.+\.(gif|jpg|jpeg))', r'\1large\3', result)
 
     return result

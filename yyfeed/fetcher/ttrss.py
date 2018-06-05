@@ -7,6 +7,7 @@ from bs4 import SoupStrainer
 
 from yyfeed.fetcher import Item
 from yyfeed.fetcher.base import Fetcher
+from yyutil.time import astimezone
 
 
 class TtrssFetcher(Fetcher):
@@ -27,7 +28,7 @@ class TtrssFetcher(Fetcher):
         header = article.header
         title = header.h1.text
         date = header.find('span', 'posted-on').text
-        date = datetime.strptime(date, '%Y-%m-%d')
+        date = astimezone(datetime.strptime(date, '%Y-%m-%d'))
 
         imgs = []
         content = article.find(self.FILTER_ARTICLE)

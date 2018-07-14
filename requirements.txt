@@ -4,9 +4,7 @@ django-cron
 django-jet
 fake-useragent
 feedparser
-ipython
 lxml
 mysqlclient
 PyExecJS
 pylibmc
-PyYAML

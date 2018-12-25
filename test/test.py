@@ -18,12 +18,12 @@ def test_fetcher(fetcher):
 
 
 def main():
-    # test_fetcher(IYingDiFetcher(size=1))
+    test_fetcher(IYingDiFetcher())
     # test_fetcher(JandanFetcher(browser='baiduspider'))
     # test_fetcher(IAppsFetcher())
     # test_fetcher(SmzdmFetcher())
-    test_fetcher(TtrssFetcher())
-    # test_fetcher(RosiyyFetcher())
+    # test_fetcher(TtrssFetcher())
+    # test_fetcher(PoemFetcher())
     pass
 
 

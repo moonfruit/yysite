@@ -14,7 +14,8 @@ class IYingDiFetcher(Fetcher):
     SOURCE_URL = BASE_URL + '/rstag/get/source?tagId=%d&module=2&system=web'
     ARTICLE_URL = BASE_URL + '/article/%s'
 
-    LINK_URL = BASE_URL + '/web/article/home/%s'
+    ARTICLE_LINK_URL = BASE_URL + '/web/article/home/%s'
+    BBSPOST_LINK_URL = BASE_URL + '/web/bbspost/detail/%s'
     USER_URL = BASE_URL + '/web/personal/home?id=%d'
 
     def __init__(self, tag_id=17):
@@ -26,15 +27,29 @@ class IYingDiFetcher(Fetcher):
             feed = e['feed']
 
             sid = feed['sourceID']
+            title = feed['title']
             publish_date = fromtimestamp(feed['created'])
-            link = self.LINK_URL % sid
+            clazz = feed['clazz']
 
-            url = self.ARTICLE_URL % sid
-            article = self.get_cached_data(url, 'article')
+            # noinspection PyUnusedLocal
+            link = self.BASE_URL
+            description = title
 
-            description = self.get_content(article, feed.get('description'))
+            if clazz == 'article':
+                link = self.ARTICLE_LINK_URL % sid
 
-            yield Item(sid, feed['title'], publish_date, link, description)
+                url = self.ARTICLE_URL % sid
+                article = self.get_cached_data(url, 'article')
+                description = self.get_content(article, feed.get('description'))
+
+            elif clazz == 'bbsPost':
+                link = self.BBSPOST_LINK_URL % sid
+                pass
+
+            else:
+                continue
+
+            yield Item(sid, title, publish_date, link, description)
 
         return []
 

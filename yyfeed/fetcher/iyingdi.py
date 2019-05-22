@@ -26,8 +26,11 @@ class IYingDiFetcher(Fetcher):
         for e in self.get_data(self.article_url, 'feeds'):
             feed = e['feed']
 
+            title = feed.get('title')
+            if title is None:
+                continue
+
             sid = feed['sourceID']
-            title = feed['title']
             publish_date = fromtimestamp(feed['created'])
             clazz = feed['clazz']
 
